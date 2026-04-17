@@ -2,101 +2,101 @@
 
 ODS SDK for Onboarding - Python client library
 
-## 概要
+## Overview
 
-このリポジトリには、`apidoc` フォルダにある OpenAPI 仕様書から Python SDK を生成するための手順と成果物が含まれています。
-現在は、L3（アイデンティティコンポーネント）と Payment（精算・課金／決済サービス）の2つの仕様書から個別の SDK を生成する構成になっています。
+This repository contains procedures and deliverables for generating Python SDKs from OpenAPI specifications located in the `apidoc` directory.
+Currently, the SDKs are generated separately from two specifications: L3 (Identity Component) and Payment (Clearing and Payment).
 
-## 前提条件
+## Prerequisites
 
-- Python 3.9 以上がインストールされていること。
-- `npm` が利用可能であること（OpenAPI Generator CLI の実行に使用）。
-- リポジトリ内に以下の OpenAPI 仕様書が存在すること。
+- Python 3.9 or later is installed.
+- `npm` is available (used to run the OpenAPI Generator CLI).
+- The following OpenAPI specifications exist in the repository.
 
   - `apidoc/L3/api-docs.yaml`
-  - `apidoc/L3/config.yaml` (生成設定)
+  - `apidoc/L3/config.yaml` (generation configuration)
   - `apidoc/payment/openapi.json`
-  - `apidoc/payment/config.yaml` (生成設定)
+  - `apidoc/payment/config.yaml` (generation configuration)
 
-## SDK 生成手順
+## SDK Generation Procedure
 
-### Step 1 — OpenAPI Generator CLI を入手
+### Step 1 — Obtain OpenAPI Generator CLI
 
-OpenAPI Generator は `npm` でインストールされていることを前提としています。以下のコマンドでバージョンを確認できます。
+OpenAPI Generator is assumed to be installed via `npm`. You can check the version with the following command.
 
 ```bash
 npx @openapitools/openapi-generator-cli version
 ```
 
-もしインストールされていない場合は、以下のコマンドでインストールできます。
+If it is not installed, you can install it using the following command.
 
 ```bash
 npm install -g @openapitools/openapi-generator-cli
 ```
 
-### Step 2 — 仕様の検証
+### Step 2 — Specification Validation
 
 ```bash
 npx @openapitools/openapi-generator-cli validate -i apidoc/L3/api-docs.yaml
 npx @openapitools/openapi-generator-cli validate -i apidoc/payment/openapi.json
 ```
 
-検証でエラーが出た場合は生成前に修正してください。
+If validation errors occur, please fix them before proceeding with generation.
 
-### Step 3 — Python SDK の生成
+### Step 3 — Generate Python SDKs
 
-以下のコマンドを実行して、それぞれの Python クライアントを生成します。
+Run the following commands to generate each Python client.
 
-**注意:** プロキシ環境下などで証明書エラー（`unable to get local issuer certificate`）が発生する場合は、環境変数 `NODE_TLS_REJECT_UNAUTHORIZED=0` を設定して実行してください。
+**Note:** If a certificate error such as (`unable to get local issuer certificate`) occurs (for example, in a proxy environment), please run the command with the environment variable `NODE_TLS_REJECT_UNAUTHORIZED=0` set to `0`.
 
-#### L3 SDK の生成
+#### Generate L3 SDK
 
 ```bash
 npx @openapitools/openapi-generator-cli generate -i apidoc/L3/api-docs.yaml -g python -o generated/l3 -c apidoc/L3/config.yaml
 ```
 
-#### Payment SDK の生成
+#### Generate Payment SDK
 
 ```bash
 npx @openapitools/openapi-generator-cli generate -i apidoc/payment/openapi.json -g python -o generated/payment -c apidoc/payment/config.yaml
 ```
 
-### Step 4 — 生成した SDK のインストール
+### Step 4 — Install the Generated SDKs
 
-生成された SDK を仮想環境（venv）にインストールします。
+Install the generated SDKs into a virtual environment (venv).
 
-#### 仮想環境の作成と有効化
+#### Create and Activate a Virtual Environment
 
 ```bash
-# 仮想環境の作成
-python3 -m venv .venv
+# Create a virtual environment
+python -m venv .venv
 
-# 仮想環境の有効化 (Windows)
+# Activate the virtual environment (Windows)
 .venv\Scripts\activate
 
-# 仮想環境の有効化 (Linux/macOS)
+# Activate the virtual environment (Linux/macOS)
 source .venv/bin/activate
 ```
 
-#### SDK のインストール
+#### Install the SDKs
 
 ```bash
-# L3 SDK のインストール
+# Install L3 SDK
 cd generated/l3
 pip install .
-cd -
+cd ../..
 
-# Payment SDK のインストール
+# Install Payment SDK
 cd generated/payment
 pip install .
-cd -
+cd ../..
 ```
 
-### Step 5 — 利用例
+### Step 5 — Usage Example
 
-生成されたクライアントの使用例です（仮想環境が有効であることを前提としています）。
+This is an example of using the generated client (it is assumed that the virtual environment is active).
 
-#### L3 SDK の利用
+#### Using the L3 SDK
 
 ```python
 import ods_sdk_L3
@@ -112,7 +112,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
     # ...
 ```
 
-#### Payment SDK の利用
+#### Using the Payment SDK
 
 ```python
 import ods_sdk_payment
@@ -128,49 +128,52 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
     # ...
 ```
 
-#### L3 SDK 一覧
 
-| ユースケース | クラス名 | メソッド名 | 実装例 |
+#### L3 SDK List
+
+| Use Case | Class Name | Method Name | Example |
 | :--- | :--- | :--- | :--- |
-| アクセストークンの取得 | `AuthTokenControllerApi` | `access_token` | [詳細](#l3-access-token) |
-| 認証URLの取得 | `AuthUrlControllerApi` | `url` | [詳細](#l3-auth-url) |
-| API キーの検証 | `ApiKeyControllerApi` | `verify_api_key` | [詳細](#l3-verify-api-key) |
-| クライアントの登録 | `ClientsControllerApi` | `post_clients` | [詳細](#l3-post-clients) |
-| クライアントシークレットの取得 | `ClientsControllerApi` | `get_client_secret` | [詳細](#l3-get-client-secret) |
-| オペレーターの一覧取得 | `OperatorControllerApi` | `list_operator` | [詳細](#l3-list-operator) |
-| オペレーターの登録 | `OperatorControllerApi` | `post_operator` | [詳細](#l3-post-operator) |
-| パスワード変更 | `PasswordControllerApi` | `change_password` | [詳細](#l3-change-password) |
-| パスワード変更URLの取得 | `PasswordUrlControllerApi` | `url1` | [詳細](#l3-password-url) |
-| 拠点の取得 | `PlantControllerApi` | `get_plant` | [詳細](#l3-get-plant) |
-| 拠点の登録 | `PlantControllerApi` | `post_plant` | [詳細](#l3-post-plant) |
-| クライアント認証によるトークン取得 | `TokenClientControllerApi` | `client` | [詳細](#l3-token-client) |
-| トークンのイントロスペクション | `TokenIntrospectionControllerApi` | `token_introspection` | [詳細](#l3-token-introspect) |
-| パスワード認証によるトークン取得 | `TokenPasswordControllerApi` | `login` | [詳細](#l3-token-password) |
-| トークンのリフレッシュ | `TokenRefreshControllerApi` | `refresh` | [詳細](#l3-token-refresh) |
-| ユーザーの登録 | `UserControllerApi` | `post_user` | [詳細](#l3-post-user) |
-| 認可モデルの取得 | `AuthorizationControllerApi` | `get_api` | [詳細](#l3-get-authz) |
+| Obtain an access token | `AuthTokenControllerApi` | `access_token` | [Details](#l3-access-token) |
+| Retrieve authentication URL | `AuthUrlControllerApi` | `url` | [Details](#l3-auth-url) |
+| Verify API key | `ApiKeyControllerApi` | `verify_api_key` | [Details](#l3-verify-api-key) |
+| Register a client | `ClientsControllerApi` | `post_clients` | [Details](#l3-post-clients) |
+| Retrieve client secret | `ClientsControllerApi` | `get_client_secret` | [Details](#l3-get-client-secret) |
+| Retrieve operator list | `OperatorControllerApi` | `list_operator` | [Details](#l3-list-operator) |
+| Register an operator | `OperatorControllerApi` | `post_operator` | [Details](#l3-post-operator) |
+| Change password | `PasswordControllerApi` | `change_password` | [Details](#l3-change-password) |
+| Retrieve password change URL | `PasswordUrlControllerApi` | `url1` | [Details](#l3-password-url) |
+| Retrieve a plant | `PlantControllerApi` | `get_plant` | [Details](#l3-get-plant) |
+| Register a plant | `PlantControllerApi` | `post_plant` | [Details](#l3-post-plant) |
+| Obtain token via client authentication | `TokenClientControllerApi` | `client` | [Details](#l3-token-client) |
+| Token introspection | `TokenIntrospectionControllerApi` | `token_introspection` | [Details](#l3-token-introspect) |
+| Obtain token via password authentication | `TokenPasswordControllerApi` | `login` | [Details](#l3-token-password) |
+| Refresh token | `TokenRefreshControllerApi` | `refresh` | [Details](#l3-token-refresh) |
+| Register a user | `UserControllerApi` | `post_user` | [Details](#l3-post-user) |
+| Retrieve authorization model | `AuthorizationControllerApi` | `get_api` | [Details](#l3-get-authz) |
 
-#### Payment SDK 一覧
 
-| ユースケース | クラス名 | メソッド名 | 実装例 |
+
+#### Payment SDK List
+
+| Use Case | Class Name | Method Name | Example |
 | :--- | :--- | :--- | :--- |
-| データ交換状態の登録 | `DefaultApi` | `register_data_exchange_status_api_v1_data_exchange_status_post` | [詳細](#pay-register-status) |
-| データ交換状態の更新 | `DefaultApi` | `update_data_exchange_status_api_v1_data_exchange_status_put` | [詳細](#pay-update-status) |
-| 手数料モデルの一覧取得 | `DefaultApi` | `list_fee_models_api_v1_fee_model_get` | [詳細](#pay-list-fee) |
-| 手数料モデルの登録 | `DefaultApi` | `create_fee_model_api_v1_fee_model_post` | [詳細](#pay-create-fee) |
-| 手数料モデルの変更 | `DefaultApi` | `update_fee_model_api_v1_fee_model_fee_model_id_put` | [詳細](#pay-update-fee) |
-| 手数料モデルの削除 | `DefaultApi` | `delete_fee_model_api_v1_fee_model_fee_model_id_delete` | [詳細](#pay-delete-fee) |
-| 取引資格の確認 | `DefaultApi` | `check_transaction_eligibility_api_v1_data_exchange_transaction_eligibility_post` | [詳細](#pay-check-eligibility) |
-| 取引資格の確認 (利用料モデル無) | `DefaultApi` | `check_transaction_eligibility_non_fee_model_api_v1_data_exchange_non_fee_model_transaction_eligibility_post` | [詳細](#pay-check-eligibility-non-fee) |
-| 取引金額確定 (利用料モデル無) | `DefaultApi` | `confirm_data_exchange_api_v1_data_exchange_non_fee_model_confirm_post` | [詳細](#pay-confirm-non-fee) |
-| 請求予定額の取得 | `DefaultApi` | `get_billing_schedule_api_v1_billing_post` | [詳細](#pay-get-billing) |
-| 支払予定額の取得 | `DefaultApi` | `get_payment_schedule_api_v1_payment_post` | [詳細](#pay-get-payment) |
+| Register data exchange status | `DefaultApi` | `register_data_exchange_status_api_v1_data_exchange_status_post` | [Details](#pay-register-status) |
+| Update data exchange status | `DefaultApi` | `update_data_exchange_status_api_v1_data_exchange_status_put` | [Details](#pay-update-status) |
+| Retrieve fee model list | `DefaultApi` | `list_fee_models_api_v1_fee_model_get` | [Details](#pay-list-fee) |
+| Register a fee model | `DefaultApi` | `create_fee_model_api_v1_fee_model_post` | [Details](#pay-create-fee) |
+| Update a fee model | `DefaultApi` | `update_fee_model_api_v1_fee_model_fee_model_id_put` | [Details](#pay-update-fee) |
+| Delete a fee model | `DefaultApi` | `delete_fee_model_api_v1_fee_model_fee_model_id_delete` | [Details](#pay-delete-fee) |
+| Check transaction eligibility | `DefaultApi` | `check_transaction_eligibility_api_v1_data_exchange_transaction_eligibility_post` | [Details](#pay-check-eligibility) |
+| Check transaction eligibility (no fee model) | `DefaultApi` | `check_transaction_eligibility_non_fee_model_api_v1_data_exchange_non_fee_model_transaction_eligibility_post` | [Details](#pay-check-eligibility-non-fee) |
+| Confirm transaction amount (no fee model) | `DefaultApi` | `confirm_data_exchange_api_v1_data_exchange_non_fee_model_confirm_post` | [Details](#pay-confirm-non-fee) |
+| Retrieve billing schedule | `DefaultApi` | `get_billing_schedule_api_v1_billing_post` | [Details](#pay-get-billing) |
+| Retrieve payment schedule | `DefaultApi` | `get_payment_schedule_api_v1_payment_post` | [Details](#pay-get-payment) |
 
 ---
 
 <div id="l3-access-token"></div>
 
-#### アクセストークンの取得 (L3)
+#### Obtain an Access Token (L3)
 
 ```python
 import ods_sdk_L3
@@ -191,7 +194,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-post-clients"></div>
 
-#### クライアントの登録 (L3)
+#### Register a Client (L3)
 
 ```python
 import ods_sdk_L3
@@ -209,7 +212,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-verify-api-key"></div>
 
-#### API キーの検証 (L3)
+#### Verify API Key (L3)
 
 ```python
 import ods_sdk_L3
@@ -223,7 +226,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-list-operator"></div>
 
-#### オペレーターの一覧取得 (L3)
+#### Retrieve Operator List (L3)
 
 ```python
 import ods_sdk_L3
@@ -236,7 +239,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-post-user"></div>
 
-#### ユーザーの登録 (L3)
+#### Register a User (L3)
 
 ```python
 import ods_sdk_L3
@@ -250,7 +253,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-auth-url"></div>
 
-#### 認証URLの取得 (L3)
+#### Retrieve Authentication URL (L3)
 
 ```python
 import ods_sdk_L3
@@ -272,7 +275,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-get-client-secret"></div>
 
-#### クライアントシークレットの取得 (L3)
+#### Retrieve Client Secret (L3)
 
 ```python
 import ods_sdk_L3
@@ -286,7 +289,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-post-operator"></div>
 
-#### オペレーターの登録 (L3)
+#### Register an Operator (L3)
 
 ```python
 import ods_sdk_L3
@@ -304,7 +307,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-change-password"></div>
 
-#### パスワード変更 (L3)
+#### Change Password (L3)
 
 ```python
 import ods_sdk_L3
@@ -322,7 +325,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-password-url"></div>
 
-#### パスワード変更URLの取得 (L3)
+#### Retrieve Password Change URL (L3)
 
 ```python
 import ods_sdk_L3
@@ -339,7 +342,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-get-plant"></div>
 
-#### 拠点の取得 (L3)
+#### Retrieve a Plant (L3)
 
 ```python
 import ods_sdk_L3
@@ -352,7 +355,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-post-plant"></div>
 
-#### 拠点の登録 (L3)
+#### Register a Plant (L3)
 
 ```python
 import ods_sdk_L3
@@ -370,7 +373,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-token-client"></div>
 
-#### クライアント認証によるトークン取得 (L3)
+#### Obtain Token via Client Authentication (L3)
 
 ```python
 import ods_sdk_L3
@@ -389,7 +392,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-token-introspect"></div>
 
-#### トークンのイントロスペクション (L3)
+#### Token Introspection (L3)
 
 ```python
 import ods_sdk_L3
@@ -406,7 +409,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-token-password"></div>
 
-#### パスワード認証によるトークン取得 (L3)
+#### Obtain Token via Password Authentication (L3)
 
 ```python
 import ods_sdk_L3
@@ -424,7 +427,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-token-refresh"></div>
 
-#### トークンのリフレッシュ (L3)
+#### Refresh Token (L3)
 
 ```python
 import ods_sdk_L3
@@ -441,7 +444,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="l3-get-authz"></div>
 
-#### 認可モデルの取得 (L3)
+#### Retrieve Authorization Model (L3)
 
 ```python
 import ods_sdk_L3
@@ -454,7 +457,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 
 <div id="pay-register-status"></div>
 
-#### データ交換ステータスの登録 (Payment)
+#### Register Data Exchange Status (Payment)
 
 ```python
 import ods_sdk_payment
@@ -478,7 +481,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-list-fee"></div>
 
-#### 手数料モデルの一覧取得 (Payment)
+#### Retrieve Fee Model List (Payment)
 
 ```python
 import ods_sdk_payment
@@ -495,7 +498,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-create-fee"></div>
 
-#### 手数料モデルの登録 (Payment)
+#### Register a Fee Model (Payment)
 
 ```python
 import ods_sdk_payment
@@ -519,7 +522,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-check-eligibility"></div>
 
-#### 取引資格の確認 (Payment)
+#### Check Transaction Eligibility (Payment)
 
 ```python
 import ods_sdk_payment
@@ -543,7 +546,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-get-billing"></div>
 
-#### 請求スケジュールの取得 (Payment)
+#### Retrieve Billing Schedule (Payment)
 
 ```python
 import ods_sdk_payment
@@ -566,7 +569,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-update-status"></div>
 
-#### データ交換状態の更新 (Payment)
+#### Update Data Exchange Status (Payment)
 
 ```python
 import ods_sdk_payment
@@ -590,7 +593,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-update-fee"></div>
 
-#### 手数料モデルの変更 (Payment)
+#### Update a Fee Model (Payment)
 
 ```python
 import ods_sdk_payment
@@ -615,7 +618,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-delete-fee"></div>
 
-#### 手数料モデルの削除 (Payment)
+#### Delete a Fee Model (Payment)
 
 ```python
 import ods_sdk_payment
@@ -634,7 +637,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-check-eligibility-non-fee"></div>
 
-#### 取引資格の確認 (利用料モデル無) (Payment)
+#### Check Transaction Eligibility (No Fee Model) (Payment)
 
 ```python
 import ods_sdk_payment
@@ -658,7 +661,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-confirm-non-fee"></div>
 
-#### 取引金額確定 (利用料モデル無) (Payment)
+#### Confirm Transaction Amount (No Fee Model) (Payment)
 
 ```python
 import ods_sdk_payment
@@ -682,7 +685,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 <div id="pay-get-payment"></div>
 
-#### 支払予定額の取得 (Payment)
+#### Retrieve Payment Schedule (Payment)
 
 ```python
 import ods_sdk_payment
@@ -703,50 +706,50 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
     )
 ```
 
-## Step 6 — サンプルアプリの実行
+## Step 6 — Run the Sample Application
 
-`sample-app` ディレクトリには、それぞれの SDK を使用したサンプルコードが格納されています。
+The `sample-app` directory contains sample code that uses each SDK.
 
-### 実行方法
+### How to Run
 
-1. **仮想環境の準備**:
-   Step 4 に従って仮想環境を作成し、有効化してください。
+1. **Prepare a virtual environment**:
+   Create and activate a virtual environment by following Step 4.
 
-2. **SDK と依存関係のインストール**:
+2. **Install the SDKs and dependencies**:
    ```bash
-   # SDK のインストール (Step 4 と同じ)
+   # Install the SDKs (same as Step 4)
    pip install ./generated/l3
    pip install ./generated/payment
 
-   # 各 SDK が依存するライブラリのインストール
+   # Install libraries required by each SDK
    pip install -r generated/l3/requirements.txt
    pip install -r generated/payment/requirements.txt
    ```
 
-3. **サンプルの実行**:
-   `sample-app` ディレクトリに移動して、目的のサンプルを実行します。
+3. **Run the samples**:
+   Move to the `sample-app` directory and run the desired sample.
    ```bash
    cd sample-app
    python auth_samples.py
    ```
 
-### サンプル構成
+### Sample Structure
 
-- `config.py`: API ホストや認証などの共通設定。
-- `auth_samples.py`: 認証関連（トークン取得、URL 生成）。
-- `account_samples.py`: アカウント管理（オペレーター、プラント、ユーザー）。
-- `data_exchange_samples.py`: データ交換、利用料モデル。
-- `authz_samples.py`: 認可、API キー検証。
-- `token_samples.py`: トークン管理（リフレッシュ、イントロスペクト）。
-- `misc_samples.py`: その他（クライアント管理、パスワード変更）。
+- `config.py`:  Common configuration such as API host and authentication.
+- `auth_samples.py`: Authentication-related samples (token acquisition, URL generation).
+- `account_samples.py`: Account management (operators, plants, users).
+- `data_exchange_samples.py`: Data exchange and fee models.
+- `authz_samples.py`: Authorization and API key verification.
+- `token_samples.py`: Token management (refresh, introspection).
+- `misc_samples.py`: Miscellaneous samples (client management, password changes).
 
-※ 各サンプル内の API 呼び出し部分はコメントアウトされています。実際のサーバー環境に合わせて調整してください。
+Note: API call sections within each sample are commented out. Please adjust them according to your actual server environment.
 
-## エンドポイント一覧
+## Endpoint List
 
 ### L3 (apidoc/L3/api-docs.yaml)
 
-| Path | HTTP メソッド | operationId |
+| Path | HTTP Method | operationId |
 |---|---:|---|
 | /auth/password/{operator_id} | PUT | changePassword |
 | /account/operator/{operator_id} | GET | getOperator |
@@ -778,7 +781,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 
 ### Payment (apidoc/payment/openapi.json)
 
-| Path | HTTP メソッド | operationId |
+| Path | HTTP Method | operationId |
 |---|---:|---|
 | /api/v1/fee-model | POST | create_fee_model_api_v1_fee_model_post |
 | /api/v1/fee-model | GET | list_fee_models_api_v1_fee_model_get |
@@ -793,12 +796,12 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 | /api/v1/payment | POST | get_payment_schedule_api_v1_payment_post |
 | /api/v1/billing | POST | get_billing_schedule_api_v1_billing_post |
 
-## ライセンス
+## License
 
-- 本リポジトリはMITライセンスで提供されています。
-- ソースコードおよび関連ドキュメントの著作権は株式会社NTTデータグループ、株式会社NTTデータに帰属します。
+- This repository is provided under the MIT License.
+- The copyright of the source code and related documentation belongs to NTT DATA Group Corporation and NTT DATA Corporation.
 
-## 免責事項
+## Disclaimer
 
-- 本リポジトリの内容は予告なく変更・削除する可能性があります。
-- 本リポジトリの利用により生じた損失及び損害等について、いかなる責任も負わないものとします。
+- The contents of this repository may be changed or removed without prior notice.
+- The authors and maintainers assume no responsibility whatsoever for any losses or damages arising from the use of this repository.
