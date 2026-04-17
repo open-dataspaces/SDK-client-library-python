@@ -1,7 +1,8 @@
-
 # open-data-spaces-sdk-client-library-python
 
 ODS SDK for Onboarding - Python client library
+
+## Overview
 
 This repository contains procedures and deliverables for generating Python SDKs from OpenAPI specifications located in the `apidoc` directory.
 Currently, the SDKs are generated separately from two specifications: L3 (Identity Component) and Payment (Clearing and Payment).
