@@ -95,6 +95,7 @@ cd -
 ### Step 5 — 利用例
 
 生成されたクライアントの使用例です（仮想環境が有効であることを前提としています）。
+なお、ここでは [SDK-docker-compose](https://github.com/open-dataspaces/SDK-docker-compose) で起動した各サービスに直接接続するケースを想定しています。
 
 #### L3 SDK の利用
 
@@ -104,7 +105,7 @@ from ods_sdk_L3.rest import ApiException
 from pprint import pprint
 
 configuration = ods_sdk_L3.Configuration(
-    host = "http://localhost:8090"
+    host = "http://localhost:8080"
 )
 
 with ods_sdk_L3.ApiClient(configuration) as api_client:
@@ -120,7 +121,7 @@ from ods_sdk_payment.rest import ApiException
 from pprint import pprint
 
 configuration = ods_sdk_payment.Configuration(
-    host = "http://localhost:8080"
+    host = "http://localhost:8001"
 )
 
 with ods_sdk_payment.ApiClient(configuration) as api_client:
@@ -176,7 +177,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.auth_token_request import AuthTokenRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.AuthTokenControllerApi(api_client)
     auth_token_request = AuthTokenRequest(
@@ -197,7 +198,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.post_clients_request import PostClientsRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.ClientsControllerApi(api_client)
     post_clients_request = PostClientsRequest(
@@ -214,7 +215,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 ```python
 import ods_sdk_L3
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.ApiKeyControllerApi(api_client)
     api_key = "your_api_key_here"
@@ -228,7 +229,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 ```python
 import ods_sdk_L3
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.OperatorControllerApi(api_client)
     api_response = api_instance.list_operator()
@@ -241,7 +242,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 ```python
 import ods_sdk_L3
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.UserControllerApi(api_client)
     user_id = "sample_user_id"
@@ -256,7 +257,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.auth_url_request import AuthUrlRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.AuthUrlControllerApi(api_client)
     request = AuthUrlRequest(
@@ -277,7 +278,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 ```python
 import ods_sdk_L3
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.ClientsControllerApi(api_client)
     client_uuid = "client-uuid-123"
@@ -292,7 +293,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.post_operator_request import PostOperatorRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.OperatorControllerApi(api_client)
     request = PostOperatorRequest(
@@ -310,7 +311,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.password_request import PasswordRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.PasswordControllerApi(api_client)
     request = PasswordRequest(
@@ -328,7 +329,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.password_url_request import PasswordUrlRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.PasswordUrlControllerApi(api_client)
     request = PasswordUrlRequest(
@@ -344,7 +345,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 ```python
 import ods_sdk_L3
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.PlantControllerApi(api_client)
     api_response = api_instance.get_plant(plant_id="plant-123")
@@ -358,7 +359,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.post_plant_request import PostPlantRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.PlantControllerApi(api_client)
     request = PostPlantRequest(
@@ -376,7 +377,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.token_client_request import TokenClientRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.TokenClientControllerApi(api_client)
     request = TokenClientRequest(
@@ -395,7 +396,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.token_introspection_request import TokenIntrospectionRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.TokenIntrospectionControllerApi(api_client)
     request = TokenIntrospectionRequest(
@@ -412,7 +413,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.token_password_request import TokenPasswordRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.TokenPasswordControllerApi(api_client)
     request = TokenPasswordRequest(
@@ -430,7 +431,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_L3
 from ods_sdk_L3.models.token_refresh_request import TokenRefreshRequest
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.TokenRefreshControllerApi(api_client)
     request = TokenRefreshRequest(
@@ -446,7 +447,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 ```python
 import ods_sdk_L3
 
-configuration = ods_sdk_L3.Configuration(host="http://localhost:8090")
+configuration = ods_sdk_L3.Configuration(host="http://localhost:8080")
 with ods_sdk_L3.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_L3.AuthorizationControllerApi(api_client)
     api_response = api_instance.get_api(store_id="store-123")
@@ -460,7 +461,7 @@ with ods_sdk_L3.ApiClient(configuration) as api_client:
 import ods_sdk_payment
 from ods_sdk_payment.models.data_exchange_status_request import DataExchangeStatusRequest
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     request = DataExchangeStatusRequest(
@@ -483,7 +484,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 ```python
 import ods_sdk_payment
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     api_response = api_instance.list_fee_models_api_v1_fee_model_get(
@@ -501,7 +502,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 import ods_sdk_payment
 from ods_sdk_payment.models.fee_model_create_request import FeeModelCreateRequest
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     request = FeeModelCreateRequest(
@@ -525,7 +526,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 import ods_sdk_payment
 from ods_sdk_payment.models.transaction_eligibility_request import TransactionEligibilityRequest
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     request = TransactionEligibilityRequest(
@@ -549,7 +550,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 import ods_sdk_payment
 from ods_sdk_payment.models.billing_schedule_request import BillingScheduleRequest
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     request = BillingScheduleRequest(
@@ -572,7 +573,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 import ods_sdk_payment
 from ods_sdk_payment.models.data_exchange_status_request import DataExchangeStatusRequest
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     request = DataExchangeStatusRequest(
@@ -596,7 +597,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 import ods_sdk_payment
 from ods_sdk_payment.models.fee_model_update_request import FeeModelUpdateRequest
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     request = FeeModelUpdateRequest(
@@ -620,7 +621,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 ```python
 import ods_sdk_payment
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     api_response = api_instance.delete_fee_model_api_v1_fee_model_fee_model_id_delete(
@@ -640,7 +641,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 import ods_sdk_payment
 from ods_sdk_payment.models.transaction_eligibility_non_fee_model_request import TransactionEligibilityNonFeeModelRequest
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     request = TransactionEligibilityNonFeeModelRequest(
@@ -664,7 +665,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 import ods_sdk_payment
 from ods_sdk_payment.models.data_exchange_non_fee_model_request import DataExchangeNonFeeModelRequest
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     request = DataExchangeNonFeeModelRequest(
@@ -688,7 +689,7 @@ with ods_sdk_payment.ApiClient(configuration) as api_client:
 import ods_sdk_payment
 from ods_sdk_payment.models.payment_schedule_request import PaymentScheduleRequest
 
-configuration = ods_sdk_payment.Configuration(host="http://localhost:8080")
+configuration = ods_sdk_payment.Configuration(host="http://localhost:8001")
 with ods_sdk_payment.ApiClient(configuration) as api_client:
     api_instance = ods_sdk_payment.DefaultApi(api_client)
     request = PaymentScheduleRequest(
