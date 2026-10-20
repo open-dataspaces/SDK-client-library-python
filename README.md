@@ -9,7 +9,7 @@ ODS SDK for Onboarding - Python client library
 
 ## 前提条件
 
-- Python 3.9 以上がインストールされていること。
+- Python 3.11 以上がインストールされていること。
 - `npm` が利用可能であること（OpenAPI Generator CLI の実行に使用）。
 - リポジトリ内に以下の OpenAPI 仕様書が存在すること。
 
