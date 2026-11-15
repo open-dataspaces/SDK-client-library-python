@@ -69,7 +69,7 @@ Install the generated SDKs into a virtual environment (venv).
 
 ```bash
 # Create a virtual environment
-python -m venv .venv
+python3 -m venv .venv
 
 # Activate the virtual environment (Windows)
 .venv\Scripts\activate
@@ -84,12 +84,12 @@ source .venv/bin/activate
 # Install L3 SDK
 cd generated/l3
 pip install .
-cd ../..
+cd -
 
 # Install Payment SDK
 cd generated/payment
 pip install .
-cd ../..
+cd -
 ```
 
 ### Step 5 — Usage Example
